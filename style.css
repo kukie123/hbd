@@ -1,0 +1,731 @@
+/* === 1. Setup & Google Font === */
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #F2F9FF; 
+    color: #333;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 50px;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* === 1.5. NEW: Welcome Animation Styles === */
+
+#welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Uses the light pink from your login page */
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200; /* On top of everything */
+    /* Smooth fade-out */
+    transition: opacity 0.8s ease-out;
+    /* Hide poppers that fly in */
+    overflow: hidden;
+}
+
+/* NEW: Wrapper for H1 and Cake */
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Starts invisible and small */
+    opacity: 0;
+    transform: scale(0.5);
+    /* This transition creates the "pop" effect */
+    transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* This class is added by JS to trigger the pop-in */
+#welcome-overlay.visible .welcome-content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#pop-in-text {
+    font-size: 2.5em; /* Big text */
+    font-weight: 700;
+    color: #FFA4A4; /* Your coral color */
+    text-align: center;
+    padding-bottom: 10px; /* Space for cake */
+    margin: 0;
+    /* Text itself doesn't animate, its parent does */
+    opacity: 1;
+    transform: scale(1);
+    transition: none;
+}
+
+/* NEW: Cake Emoji Style */
+.cake-emoji {
+    font-size: 5em;
+    line-height: 1;
+    /* Add a subtle "bobbing" animation */
+    animation: bob 3s ease-in-out infinite;
+    animation-delay: 0.5s; /* Start bobbing after pop-in */
+}
+
+/* NEW: Party Popper Styles */
+.party-popper {
+    font-size: 3em;
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-delay: 0.3s; /* Stagger their pop-in */
+}
+.popper-left {
+    top: 25%;
+    left: 10%;
+    transform: rotate(-30deg) scale(0.5);
+}
+.popper-right {
+    top: 25%;
+    right: 10%;
+    transform: rotate(30deg) scale(0.5);
+}
+
+/* This class is added by JS to trigger ALL animations */
+#welcome-overlay.visible .welcome-content {
+    opacity: 1;
+    transform: scale(1);
+}
+/* NEW: Triggers popper animation */
+#welcome-overlay.visible .party-popper {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* This class is added by JS to fade out the overlay */
+#welcome-overlay.hidden {
+    opacity: 0;
+    /* Prevents clicking on the invisible overlay */
+    pointer-events: none; 
+}
+
+/* Hide the main content by default */
+main#main-content h1,
+main#main-content .subtitle {
+    opacity: 0;
+    transform: translateY(15px);
+    /* Smooth fade-in */
+    transition: all 0.5s ease-out;
+}
+
+/* When main-content is visible, fade in the heading */
+main#main-content.visible h1 {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s; /* Staggered fade-in */
+}
+
+/* ...and then fade in the subtitle */
+main#main-content.visible .subtitle {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s; /* Staggered fade-in */
+}
+
+/* Make sure the rest of the sections (audio, gallery) are visible */
+main#main-content .section {
+    opacity: 1;
+}
+
+/* Responsive font size for the pop-in text */
+@media (min-width: 768px) {
+    #pop-in-text {
+        font-size: 4em;
+    }
+    .cake-emoji {
+        font-size: 7em;
+    }
+    .party-popper {
+        font-size: 5em;
+    }
+}
+/* === 2A. Password Page - MOBILE-FIRST (PORTRAIT) DESIGN === */
+#password-gate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* --- CUTE IDEA 1: Lighter Pink Background (unchanged) --- */
+    background: 
+        /* Sticker 1 (Small Heart, top left) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"),
+        /* Sticker 2 (Small Star, mid left) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"),
+        /* Sticker 3 (Large Star, top right) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"),
+        /* Sticker 4 (Large Heart, bottom right) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"),
+        /* Your Original Pink Gradient (MUST BE LAST) */
+        linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+    
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    background-position: 
+        top 20% left 10%,
+        top 70% left 15%,
+        top 15% right 10%,
+        top 80% right 20%,
+        center; /* Position for the gradient */
+    background-size: 
+        30px, /* Size for sticker 1 */
+        25px, /* Size for sticker 2 */
+        50px, /* Size for sticker 3 */
+        40px, /* Size for sticker 4 */
+        auto; /* Size for the gradient */
+
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    z-index: 100;
+    padding: 20px; 
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* This is the box (default portrait mode) */
+.login-container {
+    /* --- NEW STICKER CODE FOR THE LOGIN CONTAINER --- */
+    background: 
+        /* Sticker 1 (Small Heart, top left) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"),
+        /* Sticker 2 (Small Star, mid right) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"),
+        /* Sticker 3 (Small Heart, bottom left) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"),
+        /* Sticker 4 (Small Star, bottom right) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"),
+        /* Original background color, IMPORTANT: Must be last to be visible */
+        #FCF9EA; 
+    
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    background-position: 
+        top 5% left 5%,     /* Sticker 1 position */
+        top 10% right 10%,  /* Sticker 2 position */
+        bottom 10% left 15%, /* Sticker 3 position */
+        bottom 5% right 5%,  /* Sticker 4 position */
+        center; /* Position for the solid color */
+    background-size: 
+        18px, /* Sticker 1 size */
+        22px, /* Sticker 2 size */
+        20px, /* Sticker 3 size */
+        15px, /* Sticker 4 size */
+        auto; /* Size for the solid color */
+    /* --- END NEW STICKER CODE --- */
+
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    display: flex;
+    flex-direction: column; /* Stacks image on top of keypad */
+    align-items: center;
+    width: 100%;
+    max-width: 380px; /* This is our mobile-friendly width */
+    /* --- CUTE IDEA 2: Smooth transitions for everything --- */
+    transition: all 0.3s ease;
+}
+
+/* --- CUTE IDEA 3: Box "pops" on hover (unchanged) --- */
+.login-container:hover {
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+/* By default, wrappers just stack (unchanged) */
+.login-image-wrapper,
+.login-keypad-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 16px; /* Rounded rectangle */
+    object-fit: cover;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+/* --- CUTE IDEA 4: Image "pops" on hover (unchanged) --- */
+.login-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.star-indicators {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
+}
+.star {
+    font-size: 2.2em;
+    color: #FFBDBD; 
+    /* --- CUTE IDEA 5: Smooth star transition (unchanged) --- */
+    transition: all 0.3s ease;
+}
+.star.active .fa-star {
+    font-weight: 900;
+    color: #FFA4A4;
+    transform: scale(1.1);
+}
+
+/* --- CUTE IDEA 6: Inactive stars "twinkle" on hover (unchanged) --- */
+.star:not(.active):hover {
+    transform: scale(1.2) rotate(15deg);
+    color: #FFA4A4;
+}
+
+.passcode-label {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #E195AB;
+    margin-bottom: 15px;
+    text-shadow: none;
+}
+.hint {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 25px;
+    text-shadow: none;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; /* Reduced gap */
+    width: 100%;
+    max-width: 200px; /* Significantly reduced width */
+}
+.keypad-btn {
+    background: #FFCCE1;
+    color: #E195AB;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 1.0em; /* Smaller font */
+    font-weight: 700;
+    cursor: pointer;
+    /* --- CUTE IDEA 7: Smooth button transition (unchanged) --- */
+    transition: all 0.2s ease;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.keypad-btn:hover {
+    background: #FFBDBD;
+    transform: scale(1.1); /* Bigger "pop" on hover */
+}
+.keypad-btn:active {
+    background: #E195AB; /* Darker color when pressed */
+    transform: scale(0.95); /* "Squish" effect when clicked */
+}
+.keypad-btn.clear-btn, .keypad-btn.submit-btn {
+    font-size: 0.8em; /* Smaller icons */
+}
+
+.error-message {
+    color: #E195AB;
+    font-size: 1em;
+    font-weight: 700;
+    height: 1.5em;
+    margin-top: 25px;
+    text-shadow: none;
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* === 2B. Landscape/Desktop Mode (Media Query) === */
+@media (min-width: 768px) {
+    
+    .login-container {
+        max-width: 680px;
+        flex-direction: row;
+        align-items: stretch;
+        padding: 30px;
+        min-height: 350px;
+    }
+    
+    .login-image-wrapper {
+        flex: 1; 
+        padding-right: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center; /* This centers the image vertically */
+        height: 100%; 
+    }
+    
+    .login-keypad-wrapper {
+        flex: 1;
+        padding-left: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    
+    .login-image {
+        width: 220px;
+        height: 220px;
+        border-radius: 16px;
+        object-fit: cover;
+        margin-top: 90px;
+    }
+
+    .star-indicators {
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .passcode-label {
+        margin-bottom: 10px;
+    }
+
+    .hint {
+        margin-bottom: 20px;
+    }
+
+    .keypad {
+        max-width: 180px;
+        gap: 10px;
+    }
+
+    .keypad-btn {
+        font-size: 1.0em;
+    }
+    
+    .keypad-btn.clear-btn, .keypad-btn.submit-btn {
+        font-size: 0.8em;
+    }
+}
+
+
+/* === 3. Main Site Navigation (UNCHANGED) === */
+nav {
+    background: #FCF9EA;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin-bottom: 30px;
+}
+.nav-links a {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    color: #E195AB;
+    padding: 10px 15px;
+    margin: 0 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.nav-links a:hover {
+    background: #FFCCE1;
+    color: #E195AB;
+}
+.nav-links a.active {
+    background: #FFF5D7;
+    color: #E195AB;
+}
+
+/* === 4. Main Content Styling === */
+main#main-content {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+    flex-grow: 1;
+}
+h1 {
+    color: #FFA4A4;
+    font-size: 2.8em;
+    margin-bottom: 0;
+}
+.subtitle {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 5px;
+}
+.section {
+    background: #FCF9EA;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+    padding: 30px;
+    margin: 30px 0;
+}
+h2 {
+    color: #E195AB;
+    border-bottom: 2px solid #F2F9FF;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* --- BOOMBOX CSS (Unchanged) --- */
+.custom-audio-player {
+    position: relative;
+    max-width: 450px; /* Adjust as needed */
+    margin: 20px auto;
+    cursor: pointer;
+}
+.custom-audio-player img {
+    width: 100%;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+.custom-audio-player:hover img {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+#play-pause-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6em;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.custom-audio-player.playing #play-pause-icon {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+audio {
+    display: none;
+}
+
+.card-gallery img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+/* === 5. Buttons (UNCHANGED) === */
+.btn, .gift-btn, .mood-btn {
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s ease;
+    color: white;
+}
+.btn:hover, .gift-btn:hover, .mood-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.btn {
+    background-color: #FFA4A4;
+}
+.gift-btn {
+    background-color: #BADFDB;
+    color: #333;
+}
+.mood-btn {
+    background-color: #E195AB;
+}
+
+/* === 6. Modal (UNCHANGED) === */
+.hidden {
+    display: none !important;
+}
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 0.3s ease;
+}
+#modal-content {
+    background: #FFF5D7;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    animation: pop-in 0.3s ease;
+}
+
+/* --- NEW: Style for the modal image --- */
+#modal-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: none; /* Hidden by default */
+}
+
+#modal-title {
+    color: #E195AB;
+    margin-top: 0;
+}
+#modal-close-btn {
+    margin-top: 20px;
+    background-color: #FFA4A4;
+}
+
+/* === 7. Animations === */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- CUTE IDEA 8: "Shake" animation for wrong password (unchanged) --- */
+@keyframes shake-error {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-8px); }
+}
+
+/* This class will be added by JavaScript (unchanged) */
+.shake-error {
+  animation: shake-error 0.4s ease;
+}
+
+
+/* === 8. Responsive Nav (UNCHANGED) === */
+@media (max-width: 600px) {
+    nav {
+        padding: 10px;
+    }
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .nav-links a {
+        padding: 8px 10px;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    h1 {
+        font-size: 2.2em;
+    }
+    .subtitle {
+        font-size: 1em;
+    }
+    .section {
+        padding: 20px;
+        margin: 20px 0;
+    }
+}
+/* === 9. NEW: Helper Page Note Form === */
+#note-text {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #FFCCE1; /* Light pink border */
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Prevents padding from making it too wide */
+    transition: all 0.3s ease;
+}
+#note-text:focus {
+    outline: none;
+    border-color: #E195AB; /* Deeper pink border on focus */
+    box-shadow: 0 0 10px rgba(225, 149, 171, 0.3);
+}
+
+#send-success-msg {
+    color: #E195AB;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+/* Styles for the new notes list */
+#notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.note-item {
+    background: #FFF5D7; /* Your light yellow color */
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid #E195AB;
+}
+
+.note-item p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+    /* Allows long words to break and wrap */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.note-item span {
+    font-size: 0.8em;
+    color: #E195AB;
+    margin-top: 8px;
+    display: block;
+}
+
+/* --- NEW: Keyframe for cake bobbing --- */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* --- NEW: Minimal Style for Home Page ONLY --- */
+.home-page .section {
+    background: none;
+    box-shadow: none;
+    padding: 20px 0; /* Adds vertical spacing, removes side padding */
+}
+
+/* This gives your H2 titles a nice line on the minimal page */
+.home-page h2 {
+    border-bottom: 2px solid #FFBDBD; /* Light pink border */
+}

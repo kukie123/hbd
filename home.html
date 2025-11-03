@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body class="home-page"> <div id="welcome-overlay">
+        <div class="party-popper popper-left">🎉</div>
+        <div class="welcome-content">
+            <h1 id="pop-in-text">Happy birthday My love!</h1>
+            <div class="cake-emoji">🎂</div>
+        </div>
+        <div class="party-popper popper-right">🎉</div>
+    </div>
+
+    <nav>
+        <div class="nav-links">
+            <a href="home.html" class="active">🏠 Home</a>
+            <a href="gifts.html">🎁 Gifts</a>
+            <a href="helper.html">❤️ About</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        
+        <h1>Happy birthday My love! 🎂</h1>
+        <p class="subtitle">
+            Older, Wiser and Hotter than ever
+        </p>
+
+        <div class="section" data-aos="fade-up" data-aos-delay="200">
+            <h2>I just wanted to say...</h2>
+            
+            <div class="custom-audio-player" id="audio-player-wrapper">
+                <img src="radio.png" alt="Cute boombox player"> <i id="play-pause-icon" class="fas fa-play-circle"></i>
+            </div>
+
+            <audio id="birthday-audio">
+                <source src="birthday-wish.mp3" type="audio/mpeg">
+                Your browser doesn't support audio.
+            </audio>
+        </div>
+        <div class="section" data-aos="fade-up" data-aos-delay="300">
+            <h2> All of me love all of you UwU </h2>
+            <div class="card-gallery">
+                <img src="1.png" id="card-image" alt="A wish card">
+            </div>
+            <button class="btn" id="prev-btn">Prev</button>
+            <button class="btn" id="next-btn">Next </button>
+        </div>
+
+    </main>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main-script.js"></script>
+</body>
+</html>

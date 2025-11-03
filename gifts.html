@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Gifts!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="home.html">🏠 Home</a>
+            <a href="gifts.html" class="active">🎁 Gifts</a>
+            <a href="helper.html">❤️ About</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <h1 data-aos="fade-up">Here are your virtual gifts</h1> <p class="subtitle"  data-aos="fade-up" data-aos-delay="100">
+            You deserve the world, wishing you get everything you want! ^-^
+        </p>
+
+        <div class="section" data-aos="fade-up" data-aos-delay="200">
+            <button class="gift-btn" onclick="showMessage('gift', 'iphone')"> iPhone 17 Pro Max</button>
+            <button class="gift-btn" onclick="showMessage('gift', 'bike')"> Duke Bike</button>
+            <button class="gift-btn" onclick="showMessage('gift', 'cologne')"> Dior Sauvage</button>
+            <button class="gift-btn" onclick="showMessage('gift', 'watch')"> Rolex Watch</button>
+            <button class="gift-btn" onclick="showMessage('gift', 'certificate')"> Certificate</button>
+        </div>
+    </main>
+
+    <div id="modal-backdrop" class="hidden">
+        <div id="modal-content">
+            <img id="modal-image" src="" alt="Gift Image">
+            
+            <h3 id="modal-title"></h3>
+            <p id="modal-text"></p>
+            <button id="modal-close-btn" class="btn">Close</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main-script.js"></script>
+</body>
+</html>
